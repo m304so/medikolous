@@ -1,0 +1,12 @@
+php_flag display_errors on
+
+DirectoryIndex index.php
+AddDefaultCharset UTF-8
+
+RewriteEngine on 
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteEngine on
+RewriteRule ^(.*)$ index.php?request=$1 [L,QSA]
