@@ -7,11 +7,11 @@
 				<h4 class="modal-title">Авторизация</h4>
 			</div>
 			<div class="modal-body">
-				<form>
+				<form class="js-auth-form" method="POST">
 					<div class="form-group">
 						<div class="input-group">
 							<span class="input-group-addon transparent"><span class="glyphicon glyphicon-envelope"></span></span>
-							<input class="form-control left-border-none" placeholder="Email" type="text" name="email">
+							<input class="form-control left-border-none" placeholder="Email" type="text" name="email"  required="required" pattern="[A-Za-z]">
 						</div>
 						<br>
 						<div class="input-group">
@@ -22,7 +22,7 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Войти</button>
+				<button type="button" class="btn btn-default js-btn-auth">Войти</button>
 			</div>
 		</div>
 	</div>

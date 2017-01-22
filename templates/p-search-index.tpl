@@ -15,7 +15,6 @@
 				<span class="input-group-addon transparent"><span class="glyphicon glyphicon-calendar"></span></span>
 				<input class="form-control js-visit-date" placeholder="Дата приема" type="text" name="visitdate"/>
 			</div>
-			<br>
 			<div class="form-group">
 				<h3>Персональные данные</h3>
 				<div class="input-group">
@@ -41,6 +40,9 @@
 
 <script type="text/javascript">
 	$(function () {
-		$('.js-visit-date').datetimepicker();
+		$('.js-visit-date').datetimepicker({
+			format: 'DD-MM-YYYY hh:mm:ss',
+			stepping: 15
+		});
 	});
 </script>

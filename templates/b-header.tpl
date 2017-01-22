@@ -26,23 +26,46 @@
 	<div class="navbar navbar-relative-top navbar-inverse" style="border-radius:0;" role="navigation">
 		<div class="container">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="../">Запись на прием к врачу</a>
+				<a class="navbar-brand" href="../">{$logo}</a>
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#b-menu-1">
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
 			</div>
-			<div class="collapse navbar-collapse" id="b-menu-1">
+			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav navbar-right">
-					<li {if $menu == ('Список врачей')} class="active" {/if} ><a href="/speciality">Специальности</a></li>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span><b class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li><a href="#" data-toggle="modal" data-target="#auth">Вход</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#reg">Регистрация</a></li>
-						</ul>
-					</li>
+					{if $isAdmin}
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Специальности<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="/speciality">Список специальностей</a></li>
+								<li><a href="/speciality/addNew">Добавить новую</a></li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Врачи<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="/doctor">Список врачей</a></li>
+								<li><a href="/doctor/addNew">Добавить нового</a></li>
+							</ul>
+						</li>
+						<li {if $menu == ('Журнал записей')} class="active" {/if} ><a href="/journal">Журнал записей</a></li>
+						<li {if $menu == ('Парсер')} class="active" {/if} ><a href="/parser">Парсер</a></li>
+					{else}
+						<li {if $menu == ('Список врачей')} class="active" {/if} ><a href="/speciality">Специальности</a></li>
+					{/if}
+					{if !$login}
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span><b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="#" data-toggle="modal" data-target="#auth">Вход</a></li>
+								<li><a href="#" data-toggle="modal" data-target="#reg">Регистрация</a></li>
+							</ul>
+						</li>
+					{else}
+						<li><a href="/auth/logout">Выход</a></li>
+						{/if}
 				</ul>
 			</div> <!-- /.nav-collapse -->
 			{include 'b-auth.tpl'}
