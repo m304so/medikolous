@@ -33,7 +33,7 @@
 					<span class="icon-bar"></span>
 				</button>
 			</div>
-			<div class="collapse navbar-collapse">
+			<div class="collapse navbar-collapse" id="b-menu-1">
 				<ul class="nav navbar-nav navbar-right">
 					{if $isAdmin}
 						<li class="dropdown">
