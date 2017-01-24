@@ -27,15 +27,15 @@
 		<div class="container">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="../">{$logo}</a>
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#b-menu-1">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu-top">
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
 			</div>
-			<div class="collapse navbar-collapse" id="b-menu-1">
+			<div class="collapse navbar-collapse" id="menu-top">
 				<ul class="nav navbar-nav navbar-right">
-					{if $isAdmin}
+					{if $moderator}
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Специальности<b class="caret"></b></a>
 							<ul class="dropdown-menu">

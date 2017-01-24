@@ -12,14 +12,26 @@ class AuthController extends mainController {
 		$this->_model = new Auth();
 	}
 
+	/**
+	 * TODO: исправить временное решение по авторизации пользователей
+	 */
 	public function login() {
 		$this->redirect(!$this->isAjax());
 		if (Validator::isEmail($_POST['email'])) {
 			$pwdCheck = sha1('admin');
-			if ($_POST['email'] === 'admin@medikolous.ru') {
+			if ($_POST['email'] === 'admin@mail.ru') {
 				if (sha1($_POST['password']) === $pwdCheck) {
 					$_SESSION['login'] = true;
-					$_SESSION['isAdmin'] = true;
+					$_SESSION['access_level'] = 7;
+					$answer = ['result' => true];
+					$this->jsonReturn($answer);
+				}
+			}
+			$pwdCheck = sha1('moderator');
+			if ($_POST['email'] === 'moderator@mail.ru') {
+				if (sha1($_POST['password']) === $pwdCheck) {
+					$_SESSION['login'] = true;
+					$_SESSION['access_level'] = 3;
 					$answer = ['result' => true];
 					$this->jsonReturn($answer);
 				}

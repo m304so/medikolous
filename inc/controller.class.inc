@@ -22,8 +22,8 @@ class mainController {
 		if (!isset($this->_baseAssign['login']) && isset($_SESSION['login'])) {
 			$this->_baseAssign['login'] = true;
 		}
-		if (!isset($this->_baseAssign['isAdmin']) && isset($_SESSION['isAdmin'])) {
-			$this->_baseAssign['isAdmin'] = true;
+		if (!isset($this->_baseAssign['access_level']) && isset($_SESSION['access_level'])) {
+			$this->_baseAssign['moderator'] = ($this->access('moderate')) ? true : false;
 		}
 		$this->_getSmartyInstance();
 	}
@@ -49,6 +49,29 @@ class mainController {
 		}
 	}
 
+	/**
+	 * Проверка на наличие прав
+	 * 
+	 * @param type $param
+	 * @return boolean
+	 */
+	public function access($param) {
+		$accessLevel = $_SESSION['access_level'];
+		switch($param) {
+			case 'moderate':
+				$result = ($accessLevel >= 3) ? true : false;
+				break;
+			case 'administrate':
+				$result = ($accessLevel == 7) ? true : false;
+				break;
+			default :
+				$result = false;
+				break;
+			
+		}
+		return $result;
+	}
+	
 	/**
 	 * Получить экземпляр объекта Smarty
 	 */
