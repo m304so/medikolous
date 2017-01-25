@@ -1,16 +1,19 @@
 <?php
 
 require_once 'parser.model.inc';
+require_once 'user.model.inc';
 
 class ParserController extends mainController {
 
 	private $_model;
 	private $_citeUrl = 'http://napopravku.ru/';
+	private $_User;
 
 	public function __construct() {
 		$this->redirect(!$this->access('moderate'));
 		parent::__construct();
 		$this->_model = new Parser();
+		$this->_User = new User();
 	}
 
 	/**
@@ -18,46 +21,63 @@ class ParserController extends mainController {
 	 * @return void
 	 */
 	public function index() {
-		set_time_limit(0);
-		$result = $this->_startParsing(1, 1);
-		log::dump($result);
-		die();
 		$assigns = [
-			'tpl' => 'p-parser-index.tpl',
-			'logo' => 'Парсер'
+			'tpl' => 'p-parser-index.tpl'
 		];
 		$this->setAssigns($assigns);
 		$this->showView();
 	}
 
 	/**
-	 * Начать парсинг
+	 * Начать разбор страниц
 	 * 
-	 * @param integer $startPage Страница с которой начать работу парсера
-	 * @param integer $count Количество сканируемых страниц
+	 * @return json array
+	 */
+	public function parse() {
+		$this->redirect(!$this->isAjax());
+		$pageNumber = (int) $_POST['pageNumber'];
+		$data = $this->_getDataFromPage($pageNumber);
+		if (!$result = $this->_saveUsers($data)) {
+			$answer = [
+				'result' => false,
+				'error' => 'Не удалось сохранить данные',
+				'data' => $data
+			];
+		} else {
+			$answer = [
+				'result' => true,
+				'amountInsert' => $result['amountInsert'],
+				'amountUpdate' => $result['amountUpdate']
+			];
+		}
+		$this->jsonReturn($answer);
+	}
+
+	/**
+	 * Получить данные со страницы
+	 * 
+	 * @param integer $pageNum Номер страницы для сканирования
 	 * @return array
 	 */
-	private function _startParsing($startPage = 0, $count = 1) {
+	private function _getDataFromPage($pageNum) {
 		$personalData = [];
-		for ($i = 0; $i < $count; $i++) {
-			$url = 'http://napopravku.ru/doctors/?type=doctors&speciality=&category=&name=&doctor=&sex=&sortingField=rating&sortingDir=desc&pageSize=10&filter=Y&PAGEN_1=' . (string) ($startPage + $i);
-			$tmpPath = './tmp/PAGEN_1=' . (string) ($startPage + $i) . '.txt';
-			if (!file_exists($tmpPath)) {
-				$tmpFile = fopen($tmpPath, 'w');
-				$content = file_get_contents($url);
-				fwrite($tmpFile, $content);
-				fclose($tmpFile);
-			} else {
-				$content = file_get_contents($tmpPath);
-			}
-			$info = $this->_getLinksAndFIO($content);
-			$avatars = $this->_getAvatarLinks($content);
-			$clinicLinks = $this->_getClinicLinks($content);
-			$clinicNames = $this->_getClinicNames($content);
-			$adultGroup = $this->_getAdultGroup($content);
-			$specialties = $this->_getSpecialties($content);
-			$personalData = $this->_prepareResultArray($info, $avatars, $adultGroup, $clinicNames, $clinicLinks, $specialties, $specialties);
+		$url = 'http://napopravku.ru/doctors/?type=doctors&speciality=&category=&name=&doctor=&sex=&sortingField=rating&sortingDir=desc&pageSize=10&filter=Y&PAGEN_1=' . $pageNum;
+		$tmpPath = './tmp/PAGEN_1=' . $pageNum . '.txt';
+		if (!file_exists($tmpPath)) {
+			$tmpFile = fopen($tmpPath, 'w');
+			$content = file_get_contents($url);
+			fwrite($tmpFile, $content);
+			fclose($tmpFile);
+		} else {
+			$content = file_get_contents($tmpPath);
 		}
+		$info = $this->_getLinksAndFIO($content);
+		$avatars = $this->_getAvatarLinks($content);
+		$clinicLinks = $this->_getClinicLinks($content);
+		$clinicNames = $this->_getClinicNames($content);
+		$adultGroup = $this->_getAdultGroup($content);
+		$specialties = $this->_getSpecialties($content);
+		$personalData = $this->_prepareResultArray($info, $avatars, $adultGroup, $clinicNames, $clinicLinks, $specialties, $specialties);
 		return $personalData;
 	}
 
@@ -125,8 +145,7 @@ class ParserController extends mainController {
 		$pattern = '/place"[^\_]*_blank"\s?>([^<]*)/';
 		return $this->_model->simpleParse($html, $pattern, 1, 'clinicName');
 	}
-	
-	
+
 	/**
 	 * Возвращает ссылку на адрес клиники
 	 * 
@@ -135,7 +154,7 @@ class ParserController extends mainController {
 	 */
 	private function _getSpecialties($html) {
 		$pattern = '/specialization">([^_]*_blank"><span>([^<]*))?([^_]*_blank"><span>([^<]*))?([^_]*_blank"><span>([^<]*))?([^_]*_blank"><span>([^<]*))?([^_]*_blank"><span>([^<]*))?([^_]*_blank"><span>([^<]*))?/';
-		return $this->_model->simpleParse($html, $pattern, [2,4,6,8], 'specialties');
+		return $this->_model->simpleParse($html, $pattern, [2, 4, 6, 8], 'specialties');
 	}
 
 	/**
@@ -204,10 +223,43 @@ class ParserController extends mainController {
 		return $result;
 	}
 
-	public function saveNewDoctor() {
+	/**
+	 * Сохранить пользователей, стянутых парсером
+	 * 
+	 * 1) Проверить наличие пользователя в базе
+	 * 		* если есть, сравнить данные
+	 * 			* если разные обновить, увеличит счетчик
+	 * 		* если нет сохранить
+	 * 2) Проверить наличие специальности в БД
+	 * 		* если нет, сохранить, если есть, получить ID
+	 * 4) Провырить наличие поликлиники в БД
+	 * 		* если нет, обновить, если есть, выдать ID
+	 * 
+	 * @param type $data
+	 */
+	private function _saveUsers($data) {
+		$count = count($data);
+		$answer = [
+			'amountInsert' => 0,
+			'amountUpdate' => 0,
+			''
+		];
+		for ($i = 0; $i < $count; $i++) {
+			$user = $this->_User->getUserByFIO($data[$i]['surname'], $data[$i]['name'], $data[$i]['patronymic']);
+			$specialties = $this->_User->getCategoryIds($data[$i]['specialties']);
+			$clinicName = $this->_User->getClinicByName($data[$i]['clinicName']);
 
-		fwrite($file, trim($_POST['name']) . ' ' . trim($_POST['surname']) . ' ' . trim($_POST['patronymic']) . "\n" . trim($_POST['speciality']) . "\n\n");
-		fclose($file);
+			if (!$user) {
+				if ($this->_User->insert($data[$i], $specialties, $clinicName)) {
+					++$answer['amountInsert'];
+				}
+			} else {
+				if ($this->_User->update($user['id'], $data[$i], $specialties, $clinicName)) {
+					++$answer['amountUpdate'];
+				}
+			}
+		}
+		return $answer;
 	}
 
 }
