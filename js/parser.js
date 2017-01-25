@@ -11,9 +11,6 @@
 	});
 
 	function parse() {
-		console.log(from);
-		console.log(amount);
-		console.log(pageNumber);
 		if (pageNumber < (from + amount - 1)) {
 			pageNumber++;
 			$.ajax({
@@ -30,8 +27,10 @@
 				} else {
 					var amountInsert = parseInt($('.js-amount-insert').html());
 					var amountUpdate = parseInt($('.js-amount-update').html());
-					$('.js-amount-insert').html(amountInsert + answer.amountInsert);
-					$('.js-amount-update').html(answer.amountUpdate);
+					amountInsert += answer.amountInsert;
+					amountUpdate += answer.amountUpdate;
+					$('.js-amount-insert').html(amountInsert);
+					$('.js-amount-update').html(amountUpdate);
 					parse();
 				}
 			});
