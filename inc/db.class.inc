@@ -49,7 +49,6 @@ class DB {
 		$this->execute($query, $params);
 		$array = $this->STH->fetchAll();
 		if (!empty($array)) {
-
 			return $array;
 		} else {
 			return false;

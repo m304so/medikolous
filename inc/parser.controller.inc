@@ -245,17 +245,44 @@ class ParserController extends mainController {
 			'amountUpdate' => 0,
 			''
 		];
+		
+// Проверить специальности пользователя
+//		foreach ($us as $spec) {
+//			if ($key = array_search('red', $array)) {
+//				unset($spec);
+//				unset($array[$key]);
+//			}
+//		}
+// Если после этой операции остались записи то обновить инфу (удалить лишние из базы, добавить новые)
+		
 		for ($i = 0; $i < $count; $i++) {
-			$user = $this->_User->getUserByFIO($data[$i]['surname'], $data[$i]['name'], $data[$i]['patronymic']);
-			$specialties = $this->_User->getCategoryIds($data[$i]['specialties']);
-			$clinicName = $this->_User->getClinicByName($data[$i]['clinicName']);
-
-			if (!$user) {
-				if ($this->_User->insert($data[$i], $specialties, $clinicName)) {
+			$user = $this->_User->getUserByFIO($data[$i]['name'], $data[$i]['surname'], $data[$i]['patronymic']);
+			$clinicId = $this->_User->getClinicIdByName($data[$i]['clinicName'], $data[$i]['clinicLink']);
+			// $specialties = $this->_User->getSpecialtiesIds($data[$i]['specialties']);
+			if (!$user || empty($user)) {
+				$params = [
+					'name' => $data[$i]['name'],
+					'surname' => $data[$i]['surname'],
+					'patronymic' => $data[$i]['patronymic'],
+					'avatar' => $data[$i]['avatar'],
+					'link' => $data[$i]['link'],
+					'adult_group' => $data[$i]['adultGroup'],
+					'clinic_id' => $clinicId
+				];
+				if ($this->_User->insert($params)) {
 					++$answer['amountInsert'];
 				}
 			} else {
-				if ($this->_User->update($user['id'], $data[$i], $specialties, $clinicName)) {
+				if ($this->_User->update($user['id'], $data[$i])) {
+					$params = [
+						'name' => $data[$i]['name'],
+						'surname' => $data[$i]['surname'],
+						'patronymic' => $data[$i]['patronymic'],
+						'avatar' => $data[$i]['avatar'],
+						'link' => $data[$i]['link'],
+						'adult_group' => $data[$i]['adultGroup'],
+						'clinic_id' => $clinicId
+					];
 					++$answer['amountUpdate'];
 				}
 			}
