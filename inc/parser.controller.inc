@@ -47,7 +47,8 @@ class ParserController extends mainController {
 			$answer = [
 				'result' => true,
 				'amountInsert' => $result['amountInsert'],
-				'amountUpdate' => $result['amountUpdate']
+				'amountUpdate' => $result['amountUpdate'],
+				'data' => $data
 			];
 		}
 		$this->jsonReturn($answer);

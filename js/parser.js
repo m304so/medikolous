@@ -25,6 +25,9 @@
 					$('.js-parser-form').children('.form-group').addClass('has-error');
 					console.log(answer.error);
 				} else {
+					$('.js-parser-form').children('.form-group').removeClass('has-error');
+					$('.js-parser-form').children('.form-group').addClass('has-success');
+					console.log(answer.data);
 					var amountInsert = parseInt($('.js-amount-insert').html());
 					var amountUpdate = parseInt($('.js-amount-update').html());
 					amountInsert += answer.amountInsert;
