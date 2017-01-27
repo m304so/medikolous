@@ -72,7 +72,7 @@ class ParserController extends mainController {
 		} else {
 			$content = file_get_contents($tmpPath);
 		}
-		$info = $this->_getLinksAndFIO($content);
+		$info = $this->_getLinkAndFIO($content);
 		$avatars = $this->_getAvatarLinks($content);
 		$clinicLinks = $this->_getClinicLinks($content);
 		$clinicNames = $this->_getClinicNames($content);
@@ -83,34 +83,36 @@ class ParserController extends mainController {
 	}
 
 	/**
-	 * Возвращает сгруппированные массивы ФИО
+	 * Возвращает ссылки на изображения
 	 * 
 	 * @param string $html Содержимое HTML-страницы
-	 * @return array 0 - name, 1 - surname, 2 - patronymic
+	 * @return array
 	 */
-	private function _getLinksAndFIO($html) {
-		$result = [];
-		$matches = [];
-		$pattern = '/data-event="clickdoctor" href="\/([^"]*)"[^>]*>([^<]*)/';
-		preg_match_all($pattern, $html, $matches);
-		$fioArray = $matches[2];
-		$linkArray = $matches[1];
-		$cnt = sizeof($fioArray);
-		for ($i = 0; $i < $cnt; $i++) {
-			$string = trim($fioArray[$i]);
-			if ($string !== '') {
-				$fio = explode(' ', $string);
-				$result[] = [
-					'name' => $fio[0],
-					'surname' => $fio[1],
-					'patronymic' => $fio[2]
-				];
-			}
-		}
-		$count = sizeof($result);
+	private function _getLinkAndFIO($html) {
+		$pattern = '/class="uline js-analytics split-none" data-goal="up-doctors" target="_blank" data-event="click" data-split-action="clickdoctor" data-event="clickdoctor" href="\/([^"]*)">([^<]*)/';
+		$info = $this->_model->simpleParse($html, $pattern, [1,2], 'string');
+		$count = sizeof($info['string']);
 		for ($i = 0; $i < $count; $i++) {
-			$result[$i]['link'] = $this->_citeUrl . $linkArray[$i];
+			$tmp = explode(' ', $info['string'][$i][1]);
+			$result[] = [
+				'name' => $tmp[0],
+				'surname' => $tmp[1],
+				'patronymic' => $tmp[2],
+				'link' => $this->_citeUrl . $info['string'][$i][0]
+			];
 		}
+		return $result;
+	}
+
+	/**
+	 * Возвращает ссылки на изображения
+	 * 
+	 * @param string $html Содержимое HTML-страницы
+	 * @return array
+	 */
+	private function _getLink($html) {
+		$pattern = '/a class="pic js-analytics split-none" data-goal="up-doctors" target="_blank" data-event="click" data-split-action="clickdoctor" data-event="clickdoctor"[^>]*>([^<]*)/';
+		$result = $this->_model->simpleParse($html, $pattern, 1, 'link');
 		return $result;
 	}
 
@@ -175,7 +177,7 @@ class ParserController extends mainController {
 			$second = $this->_getAdultId($matches[5][$i]);
 			$result[] = $first + $second;
 		}
-		return ['adultGroup' => $result];
+		return ['adult_group' => $result];
 	}
 
 	/**
@@ -242,10 +244,9 @@ class ParserController extends mainController {
 		$count = count($data);
 		$answer = [
 			'amountInsert' => 0,
-			'amountUpdate' => 0,
-			''
+			'amountUpdate' => 0
 		];
-		
+
 // Проверить специальности пользователя
 //		foreach ($us as $spec) {
 //			if ($key = array_search('red', $array)) {
@@ -254,35 +255,24 @@ class ParserController extends mainController {
 //			}
 //		}
 // Если после этой операции остались записи то обновить инфу (удалить лишние из базы, добавить новые)
-		
 		for ($i = 0; $i < $count; $i++) {
 			$user = $this->_User->getUserByFIO($data[$i]['name'], $data[$i]['surname'], $data[$i]['patronymic']);
-			$clinicId = $this->_User->getClinicIdByName($data[$i]['clinicName'], $data[$i]['clinicLink']);
-			// $specialties = $this->_User->getSpecialtiesIds($data[$i]['specialties']);
+			$clinic = $this->_User->getClinicIdByName($data[$i]['clinicName'], $data[$i]['clinicLink']);
+			$params = [
+				'name' => $data[$i]['name'],
+				'surname' => $data[$i]['surname'],
+				'patronymic' => $data[$i]['patronymic'],
+				'avatar' => $data[$i]['avatar'],
+				'link' => $data[$i]['link'],
+				'adult_group' => $data[$i]['adult_group'],
+				'clinic_id' => $clinic
+			];
 			if (!$user || empty($user)) {
-				$params = [
-					'name' => $data[$i]['name'],
-					'surname' => $data[$i]['surname'],
-					'patronymic' => $data[$i]['patronymic'],
-					'avatar' => $data[$i]['avatar'],
-					'link' => $data[$i]['link'],
-					'adult_group' => $data[$i]['adultGroup'],
-					'clinic_id' => $clinicId
-				];
 				if ($this->_User->insert($params)) {
 					++$answer['amountInsert'];
 				}
 			} else {
-				if ($this->_User->update($user['id'], $data[$i])) {
-					$params = [
-						'name' => $data[$i]['name'],
-						'surname' => $data[$i]['surname'],
-						'patronymic' => $data[$i]['patronymic'],
-						'avatar' => $data[$i]['avatar'],
-						'link' => $data[$i]['link'],
-						'adult_group' => $data[$i]['adultGroup'],
-						'clinic_id' => $clinicId
-					];
+				if ($this->_User->update((int) $user[0]['id'], $params)) {
 					++$answer['amountUpdate'];
 				}
 			}

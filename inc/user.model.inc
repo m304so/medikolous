@@ -26,8 +26,8 @@ class User extends Model {
 			':patronymic' => $data['patronymic'],
 			':avatar' => $data['avatar'],
 			':link' => $data['link'],
-			':adult_group' => $data['adultGroup'],
-			':clinic_id' => $data['clinicId']
+			':adult_group' => $data['adult_group'],
+			':clinic_id' => $data['clinic_id']
 		];
 		return $this->db->execute($query, $params);
 	}
@@ -48,14 +48,14 @@ class User extends Model {
 			':patronymic' => $data['patronymic'],
 			':avatar' => $data['avatar'],
 			':link' => $data['link'],
-			':adult_group' => $data['adultGroup'],
-			':clinic_id' => $data['clinicId']
+			':adult_group' => $data['adult_group'],
+			':clinic_id' => $data['clinic_id']
 		];
 		return $this->db->execute($query, $params);
 	}
 
 	public function getUserByFIO($name, $surname, $patronymic) {
-		$query = 'SELECT * FROM users WHERE name = :name, surname = :surname, patronymic = :patronymic';
+		$query = 'SELECT * FROM users WHERE name = :name AND surname = :surname AND patronymic = :patronymic';
 		$params = [
 			':name' => $name,
 			':surname' => $surname,
@@ -87,7 +87,7 @@ class User extends Model {
 			$this->db->execute($query, $params);
 			return $this->db->lastID();
 		} else {
-			return $result;
+			return $result[0]['id'];
 		}
 	}
 

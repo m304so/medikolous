@@ -12,7 +12,10 @@ class DoctorController extends mainController {
 	}
 
 	public function index() {
+		$dCount = $this->_model->getDoctorsCount();
+		$doctors = $this->_model->getDoctorsPage(1);
 		$assigns = [
+			'doctors' => $doctors,
 			'tpl' => 'p-doctor-index.tpl'
 		];
 		$this->setAssigns($assigns);

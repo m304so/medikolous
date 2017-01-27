@@ -32,6 +32,7 @@ class DB {
 			$this->STH->execute($params);
 			return true;
 		} catch (PDOException $e) {
+			$this->show_error($query);
 			$this->show_error($e->getMessage());
 		}
 	}

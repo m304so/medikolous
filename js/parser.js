@@ -11,8 +11,7 @@
 	});
 
 	function parse() {
-		if (pageNumber < (from + amount - 1)) {
-			pageNumber++;
+		if (pageNumber <= (from + amount - 1)) {
 			$.ajax({
 				method: 'POST',
 				url: 'parser/parse',
@@ -27,13 +26,14 @@
 				} else {
 					$('.js-parser-form').children('.form-group').removeClass('has-error');
 					$('.js-parser-form').children('.form-group').addClass('has-success');
-					console.log(answer.data);
 					var amountInsert = parseInt($('.js-amount-insert').html());
 					var amountUpdate = parseInt($('.js-amount-update').html());
 					amountInsert += answer.amountInsert;
 					amountUpdate += answer.amountUpdate;
 					$('.js-amount-insert').html(amountInsert);
 					$('.js-amount-update').html(amountUpdate);
+					$('.js-amount-pages').html(pageNumber);
+					pageNumber++;	
 					parse();
 				}
 			});

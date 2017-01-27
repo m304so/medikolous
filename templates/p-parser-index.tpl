@@ -2,11 +2,11 @@
 	<!-- Parser -->
 	<h1>Парсер</h1>
 	<form class="js-parser-form" method="POST">
-		<div class="col-xs-12 col-md-6 col-lg-4">
+		<div class="col-xs-3 col-md-3 col-lg-3">
 			<h3>Стартовая страница</h3>
 			<div class="input-group">
 				<span class="input-group-addon transparent"><span class="glyphicon glyphicon-home"></span></span>
-				<input type="number" class="form-control js-from-page" name="from-page" placeholder="Номер страницы" min="1" value="1"/>
+				<input type="number" class="form-control js-from-page" name="from-page" placeholder="Номер страницы" min="0" value="0"/>
 			</div>
 			<h3>Количество</h3>
 			<div class="input-group date">
@@ -21,13 +21,15 @@
 		</div>
 	</form>
 	<div class="col-xs-12 col-md-6 col-lg-4">
+		<h3>Информация</h3>
+		<div class="js-title-update">
+			<b>URL http://napopravku.ru/doctors/...PAGEN_1=<span class="js-amount-pages">0</span>
+		</div>
 		<div class="js-title-insert">
-			<h3>Добавлено:</h3>
-			<span class="js-amount-insert">0</span>
+			<b>Добавлено пользователей:</b>&nbsp;<span class="js-amount-insert">0</span>
 		</div>
 		<div class="js-title-update">
-			<h3>Обновлено:</h3>
-			<span class="js-amount-update">0</span>
+			<b>Обновлено пользователей:</b>&nbsp;<span class="js-amount-update">0</span>
 		</div>
 	</div>
 	<!-- /Parser -->

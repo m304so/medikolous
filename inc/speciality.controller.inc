@@ -27,6 +27,7 @@ class SpecialityController extends mainController {
 	}
 
 	private function getCategoriesList() {
+		return false;
 		$result = [];
 		$categoryCount = 0;
 		$specialties = $this->_model->getAll();
