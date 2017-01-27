@@ -14,7 +14,7 @@ class SearchController extends mainController {
 
 	public function index() {
 		$assigns = [
-			'search' => 'doctors',
+			'menu' => 'search',
 			'doctors' => $doctors,
 			'tpl' => 'p-search-index.tpl'
 		];

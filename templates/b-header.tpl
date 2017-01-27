@@ -35,6 +35,7 @@
 			</div>
 			<div class="collapse navbar-collapse" id="menu-top">
 				<ul class="nav navbar-nav navbar-right">
+					<li {if $menu == ('search')} class="active" {/if} ><a href="/search">Поиск</a></li>
 					{if $moderator}
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Специальности<b class="caret"></b></a>
@@ -53,7 +54,6 @@
 						<li {if $menu == ('journal')} class="active" {/if} ><a href="/journal">Журнал записей</a></li>
 						<li {if $menu == ('parser')} class="active" {/if} ><a href="/parser">Парсер</a></li>
 					{else}
-						<li {if $menu == ('search')} class="active" {/if} ><a href="/search">Поиск</a></li>
 						<li {if $menu == ('doctors')} class="active" {/if} ><a href="/doctor">Врачи</a></li>
 						<li {if $menu == ('speciality')} class="active" {/if} ><a href="/speciality">Специальности</a></li>
 					{/if}
