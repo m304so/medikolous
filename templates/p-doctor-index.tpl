@@ -26,12 +26,12 @@
 </div>
 
 {if $moderator}
-<script>
-(function($) {
-	$('.js-btn-user-edit').on('click',  function() {
-		location.href = $(this).data('link');
-	});
-})(jQuery)
-</script>
+	<script>
+		(function ($) {
+			$('.js-btn-user-edit').on('click', function () {
+				location.href = $(this).data('link');
+			});
+		})(jQuery)
+	</script>
 {/if}
 

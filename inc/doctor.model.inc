@@ -8,7 +8,7 @@ class Doctor extends Model {
 		parent::__construct();
 	}
 
-	public function getDoctorsPage($from = 1, $perPage = 10) {
+	public function getDoctorsPage($from = 0, $perPage = 10) {
 		$query = '
 		SELECT
 			u.id,
