@@ -1,7 +1,7 @@
 <div class="container">
 	<h1>Врачи</h1>
 	{foreach from=$doctors key=key item=doctor}
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6" style="margin-bottom: 30px;">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6" style="min-height: 120px; margin-bottom: 20px;">
 			<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
 				<img src="{$doctor.avatar}">
 				{if $moderator}

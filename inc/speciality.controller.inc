@@ -13,6 +13,7 @@ class SpecialityController extends mainController {
 
 	public function index() {
 		$assigns = [
+			'menu' => 'speciality',
 			'tpl' => 'p-speciality-index.tpl',
 			'title' => 'Специальности',
 			'description' => 'Доступные специальности',

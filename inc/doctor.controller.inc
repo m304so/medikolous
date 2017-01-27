@@ -15,6 +15,7 @@ class DoctorController extends mainController {
 		$dCount = $this->_model->getDoctorsCount();
 		$doctors = $this->_model->getDoctorsPage();
 		$assigns = [
+			'menu' => 'doctors',
 			'doctors' => $doctors,
 			'tpl' => 'p-doctor-index.tpl'
 		];

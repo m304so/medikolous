@@ -6,7 +6,7 @@ class Doctor extends Model {
 
 	public function __construct() {
 		parent::__construct();
-	}
+		}
 
 	public function getDoctorsPage($from = 0, $perPage = 10) {
 		$query = '

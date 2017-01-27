@@ -46,14 +46,16 @@
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Врачи<b class="caret"></b></a>
 							<ul class="dropdown-menu">
-								<li><a href="/doctor">Список врачей</a></li>
+								<li><a href="/doctor">Реадактор</a></li>
 								<li><a href="/doctor/addNew">Добавить нового</a></li>
 							</ul>
 						</li>
-						<li {if $menu == ('Журнал записей')} class="active" {/if} ><a href="/journal">Журнал записей</a></li>
-						<li {if $menu == ('Парсер')} class="active" {/if} ><a href="/parser">Парсер</a></li>
+						<li {if $menu == ('journal')} class="active" {/if} ><a href="/journal">Журнал записей</a></li>
+						<li {if $menu == ('parser')} class="active" {/if} ><a href="/parser">Парсер</a></li>
 					{else}
-						<li {if $menu == ('Список врачей')} class="active" {/if} ><a href="/speciality">Специальности</a></li>
+						<li {if $menu == ('search')} class="active" {/if} ><a href="/search">Поиск</a></li>
+						<li {if $menu == ('doctors')} class="active" {/if} ><a href="/doctor">Врачи</a></li>
+						<li {if $menu == ('speciality')} class="active" {/if} ><a href="/speciality">Специальности</a></li>
 					{/if}
 					{if !$login}
 						<li class="dropdown">

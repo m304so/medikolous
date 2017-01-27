@@ -22,6 +22,7 @@ class ParserController extends mainController {
 	 */
 	public function index() {
 		$assigns = [
+			'menu' => 'parser',
 			'tpl' => 'p-parser-index.tpl'
 		];
 		$this->setAssigns($assigns);
