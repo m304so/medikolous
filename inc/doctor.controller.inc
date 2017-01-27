@@ -13,7 +13,7 @@ class DoctorController extends mainController {
 
 	public function index() {
 		$dCount = $this->_model->getDoctorsCount();
-		$doctors = $this->_model->getDoctorsPage();
+		$doctors = $this->_model->getDoctorsPage(0, 50);
 		$assigns = [
 			'menu' => 'doctors',
 			'doctors' => $doctors,
