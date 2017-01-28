@@ -41,7 +41,7 @@
 <script type="text/javascript">
 	$(function () {
 		$('.js-visit-date').datetimepicker({
-			format: 'DD-MM-YYYY hh:mm:ss',
+			format: 'HH:mm',
 			stepping: 15
 		});
 	});

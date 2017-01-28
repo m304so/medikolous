@@ -5,5 +5,6 @@
 	</p>
 	<h3>Доступ в модераторский функционал</h3>
 	Email: <b>admin@mail.ru</b><br>
-	Пароль: <b>admin</b><br>
+	Пароль: <b>admin</b><br><br>
+	Посмотреть <a href=https://github.com/m304so/medikolous">исходники</a> можно на сайте GitHub.
 </div>
