@@ -3,22 +3,22 @@
 	<meta name="author" content="Sergey Medvedev (m304so@gmail.com)">
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-	<link type="image/x-icon" href="../img/favicon.ico" rel="icon">
-	<link type="image/ico" href="../img/favicon.ico" rel="shortcut icon">
+	<link type="image/x-icon" href="/img/favicon.ico" rel="icon">
+	<link type="image/ico" href="/img/favicon.ico" rel="shortcut icon">
 
 	<meta name="description" content="{if $description} {$description} {/if}">
 	<title>{if $title} {$title} {/if}</title>
 
 	<!-- JavaScript -->
-	<script type="text/javascript" src="../js/jquery.min.js"></script>
-	<script type="text/javascript" src="../js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="../js/moment.js"></script>
-	<script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js"></script>
+	<script type="text/javascript" src="/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/js/moment.js"></script>
+	<script type="text/javascript" src="/js/bootstrap-datetimepicker.min.js"></script>
 
 	<!-- css stylesheets -->
-	<link rel="stylesheet" href="../css/bootstrap.min.css">
-	<link rel="stylesheet" href="../css/bootstrap-datetimepicker.min.css">
-	<link rel="stylesheet" href="../css/styles.css">
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/bootstrap-datetimepicker.min.css">
+	<link rel="stylesheet" href="/css/styles.css">
 </head>
 
 <body>
@@ -26,7 +26,7 @@
 	<div class="navbar navbar-relative-top navbar-inverse" style="border-radius:0;" role="navigation">
 		<div class="container">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="../">{$logo}</a>
+				<a class="navbar-brand" href="/">{$logo}</a>
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu-top">
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>

@@ -12,7 +12,7 @@
 
 		$.ajax({
 			method: 'POST',
-			url: 'auth/login',
+			url: '/auth/login',
 			dataType: 'JSON',
 			data: JSON.parse(data)
 		}).done(function (answer) {
@@ -23,6 +23,28 @@
 				$('.js-auth-form').children('.form-group').removeClass('has-error');
 				$('.js-auth-form').children('.form-group').addClass('has-success');
 				location.reload();
+			}
+		});
+		event.preventDefault();
+	});
+
+	$('.js-form-visit-doctor').submit(function (event) {
+		var data = '{';
+		$(this).find('input').each(function () {
+			data += '"' + $(this).attr('name') + '":"' + $(this).val() + '",';
+		});
+		data = data.slice(0, -1) + '}';
+
+		$.ajax({
+			method: 'POST',
+			url: '../addVisitor',
+			dataType: 'JSON',
+			data: JSON.parse(data)
+		}).done(function (answer) {
+			if (!answer.result) {
+				alert('Запись на это время уже существует');
+			} else {
+				alert('Ваша заявка успешно принята');
 			}
 		});
 		event.preventDefault();

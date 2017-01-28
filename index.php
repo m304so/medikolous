@@ -13,7 +13,7 @@ if (isset($_GET['request']) && preg_match('/^[\d\w_\/\-]+$/', $_GET['request']))
 		$cName = ucfirst($route[0]) . 'Controller';
 		$controller = new $cName;
 		if (isset($route[1]) && !empty($route[1]) && method_exists($controller, $route[1]) && is_public($controller, $route[1])) {
-			call_user_func(array($controller, $route[1]));
+			call_user_func(array($controller, $route[1]), $route[2]);
 		} else {
 			call_user_func(array($controller, 'index'));
 		}

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Янв 27 2017 г., 22:00
+-- Время создания: Янв 28 2017 г., 10:54
 -- Версия сервера: 5.5.48-log
 -- Версия PHP: 5.6.19
 
@@ -16,6 +16,8 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
+-- --------------------------------------------------------
+
 --
 -- Структура таблицы `clinics`
 --
@@ -26,6 +28,22 @@ CREATE TABLE IF NOT EXISTS `clinics` (
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `link` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `log`
+--
+
+DROP TABLE IF EXISTS `log`;
+CREATE TABLE IF NOT EXISTS `log` (
+  `id` int(10) unsigned NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `surname` varchar(255) DEFAULT NULL,
+  `patronymic` varchar(255) DEFAULT NULL,
+  `doctor_id` int(10) unsigned NOT NULL,
+  `dt_visit` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -102,6 +120,12 @@ ALTER TABLE `clinics`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Индексы таблицы `log`
+--
+ALTER TABLE `log`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `specialties`
 --
 ALTER TABLE `specialties`
@@ -127,6 +151,11 @@ ALTER TABLE `users_specialties`
 -- AUTO_INCREMENT для таблицы `clinics`
 --
 ALTER TABLE `clinics`
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT для таблицы `log`
+--
+ALTER TABLE `log`
   MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT для таблицы `specialties`

@@ -5,15 +5,12 @@
 			<div class="col-xs-3 col-sm-4 col-md-3 col-lg-3">
 				<a href="{$doctor.link}" target="_blank"><img src="{$doctor.avatar}"></a>
 					{if $moderator}
-					<button type="button" class="form-control btn-primary js-btn-user-edit" style="font-size: 0.8em; margin-top: 10px;" data-link="/doctor/edit/{$doctor.id}">Редактировать</button>
+					<button type="button" class="form-control btn-primary js-btn-user-edit"  style="margin-left: -20px; width: 120px;" data-link="/doctor/editor/{$doctor.id}">Редактировать</button>
 				{else}
-					<div class="input-group date" style="margin-left: -15px; width: 110px;" >
-						<span class="input-group-addon transparent"><span class="glyphicon glyphicon-calendar"></span></span>
-						<input class="form-control js-visit-date" placeholder="запись" type="text" name="visitdate" data-doctor-id="{$doctor.id}"/>
-					</div>
+					<button type="button" class="form-control btn-primary js-btn-link-open" style="margin-left: -15px; width: 110px;" data-link="/doctor/visit/{$doctor.id}">Записаться</button>
 				{/if}
 			</div>
-			<div class="col-lg-6 col-sm-8 col-md-9">
+			<div class="col-xs-12 col-sm-8 col-md-9 col-lg-6">
 				<b>{$doctor.name}&nbsp;{$doctor.surname}&nbsp;{$doctor.patronymic}</b>
 				<br>
 				<i>
@@ -42,4 +39,4 @@
 	</script>
 {/if}
 
-<script src="/js/doctor-edit.js"></script>
+<script src="/js/doctor.js"></script>

@@ -4,7 +4,14 @@
 		format: 'HH:mm',
 		minDate: moment({hour: 8, minute: 00}),
 		maxDate: moment({hour: 20, minute: 00}),
-		stepping: 15,
+		stepping: 30,
+		viewDate: false,
+	});
+	$('.js-visit-datetime').datetimepicker({
+		format: 'YYYY-MM-DD HH:mm',
+		minDate: moment({hour: 8, minute: 00}),
+		maxDate: moment({hour: 20, minute: 00}),
+		stepping: 30,
 		viewDate: false,
 	});
 
@@ -18,5 +25,9 @@
 			$('.js-' + className).children('input').val('');
 			$('.js-' + className).hide();
 		}
+	});
+	
+	$('.js-btn-link-open').on('click', function() {
+		location.href = $(this).data('link');
 	});
 })(jQuery);

@@ -34,4 +34,4 @@
 	</div>
 	<!-- /Parser -->
 </div>
-<script type="text/javascript" src="../js/parser.js"></script>
+<script type="text/javascript" src="/js/parser.js"></script>
